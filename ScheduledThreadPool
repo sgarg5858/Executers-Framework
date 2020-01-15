@@ -1,0 +1,39 @@
+package ExecuterServiceDemo;
+
+import java.util.Date;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
+public class ExecutorExp {
+
+	public static void main(String[] args) {
+		ScheduledExecutorService ses=Executors.newScheduledThreadPool(2);
+		Callable<String>c=()->{
+			System.out.println("Executed at- " + new Date());
+            return "Executing task";
+		};
+		 System.out.println("Time before execution started- " + new Date());
+		 ScheduledFuture<String>sf=ses.schedule(c, 3, TimeUnit.SECONDS);
+		 
+		 try {
+			System.out.println("Value- " + sf.get());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ses.shutdown();
+	        
+	}
+
+}
+Output:
+Time before execution started- Wed Jan 15 18:07:34 IST 2020
+Executed at- Wed Jan 15 18:07:37 IST 2020
+Value- Executing task
