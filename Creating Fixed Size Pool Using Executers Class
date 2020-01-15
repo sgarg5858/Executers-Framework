@@ -1,0 +1,38 @@
+package ExecuterServiceDemo;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+ class Task implements Runnable{
+
+	@Override
+	public void run() {
+		System.out.println("Executing task (Thread name)- " + Thread.currentThread().getName());
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+	}
+	 
+ }
+public class ExecutorExp {
+
+	public static void main(String[] args) {
+		ExecutorService es=Executors.newFixedThreadPool(2);
+		es.execute(new Task());
+		es.execute(new Task());
+		es.execute(new Task());
+		es.execute(new Task());
+		es.shutdown();
+	}
+
+}
+
+Output:
+Executing task (Thread name)- pool-1-thread-2
+Executing task (Thread name)- pool-1-thread-1
+Executing task (Thread name)- pool-1-thread-1
+Executing task (Thread name)- pool-1-thread-2
