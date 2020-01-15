@@ -1,0 +1,80 @@
+package ExecuterServiceDemo;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+
+ class Task implements Callable<String>{
+
+	@Override
+	public String call() throws Exception{
+		 System.out.println("Executing task (Thread name)- " + Thread.currentThread().getName());
+	        try {
+	            TimeUnit.MILLISECONDS.sleep(500);
+	        } catch (InterruptedException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	        return "In Task";
+	    }
+
+	 
+ }
+ class Task1 implements Callable<String>{
+
+		@Override
+		public String call() throws Exception{
+			 System.out.println("Executing task (Thread name)- " + Thread.currentThread().getName());
+		        try {
+		            TimeUnit.MILLISECONDS.sleep(500);
+		        } catch (InterruptedException e) {
+		            // TODO Auto-generated catch block
+		            e.printStackTrace();
+		        }
+		        return "In Task1";
+		    }
+
+		 
+	 }
+public class ExecutorExp {
+
+	public static void main(String[] args) {
+		ExecutorService es=Executors.newFixedThreadPool(2);
+		Future<String>f1=es.submit(new Task());
+		Future<String>f2=es.submit(new Task());
+		Future<String>f3=es.submit(new Task1());
+		Future<String>f4=es.submit(new Task1());
+		
+		try {
+			System.out.println("f1: "+f1.get());
+			System.out.println("f2: "+f2.get());
+			System.out.println("f3: "+f3.get());
+			System.out.println("f4: "+f4.get());
+			
+		} 
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (ExecutionException e)
+		{
+			e.printStackTrace();
+		}
+		es.shutdown();
+	}
+
+}
+Output:
+Executing task (Thread name)- pool-1-thread-1
+Executing task (Thread name)- pool-1-thread-2
+Executing task (Thread name)- pool-1-thread-2
+f1: In Task
+Executing task (Thread name)- pool-1-thread-1
+f2: In Task
+f3: In Task1
+f4: In Task1
+
+it may vary
